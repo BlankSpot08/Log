@@ -3,6 +3,8 @@ package logs;
 import main.Database;
 import main.Main;
 
+import static java.lang.System.out;
+
 import java.io.File;
 
 public abstract class Log {
@@ -23,15 +25,13 @@ public abstract class Log {
     protected final File directory;
 
     protected final void showBoard(File[] allFiles) {
-        System.out.println("\t\t\t\t\t\t\tLogs of " + Database.getCurrentUser());
+        out.println("\t\t\t\t\t\t\tLogs of " + Database.getCurrentUser());
         for (int i = 1; i < allFiles.length; i++) {
-            System.out.print(allFiles[i - 1].getName().substring(0, allFiles[i - 1].getName().length() - 4) + "\t");
+            String output = i % 4 == 0 ? "\n" : allFiles[i - 1].getName().substring(0, allFiles[i - 1].getName().length() - 4) + "\t";
 
-            if (i % 3 == 0) {
-                System.out.println();
-            }
+            out.print(output);
         }
-        System.out.println();
+        out.println();
     }
 
     protected final File findLog(File[] allFiles, int pickANumber) {
@@ -39,6 +39,7 @@ public abstract class Log {
             String id = allFiles[i].getName().
                     substring(allFiles[i].getName().length() - (String.valueOf(i).length() + 5),
                             allFiles[i].getName().length() - 4);
+
             String idNumberToFind = "#" + pickANumber;
 
             if (id.equals(idNumberToFind)) {
@@ -56,15 +57,15 @@ public abstract class Log {
         if (directory.exists() && allFiles.length != 1) {
             do {
                 showBoard(allFiles);
-                System.out.println("1.) Select");
-                System.out.println("2.) Back");
-                System.out.print("User Input: ");
+                out.print("1.) Select" +
+                        "\n2.) Back" +
+                        "\nUser Input");
                 choice = Main.inputReader.nextInt();
 
                 switch (choice) {
                     case 1:
                         showBoard(allFiles);
-                        System.out.print("User Input (#3 = 3): ");
+                        out.print("User Input (#3 = 3): ");
                         int pickANumber = Main.inputReader.nextInt();
 
                         File tempFile = findLog(allFiles, pickANumber);
@@ -81,7 +82,7 @@ public abstract class Log {
         }
 
         else {
-            System.out.println("The log directory is empty");
+            out.println("The log directory is empty");
         }
     }
 }
