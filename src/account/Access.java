@@ -10,6 +10,7 @@ public class Access {
         Database.setCurrentUser("");
         Database.setLoggedIn(false);
     }
+
     public void loginOrRegister() {
         int choice;
         do {

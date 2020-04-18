@@ -7,8 +7,8 @@ import static java.lang.System.out;
 
 public class Login {
     public boolean userValid() {
-        out.println("Logging in");
-        out.print("Username: ");
+        out.print("Logging in" +
+                "\nUsername: ");
         String username = Main.stringReader.nextLine();
         out.print("Password: ");
         String password = Main.stringReader.nextLine();

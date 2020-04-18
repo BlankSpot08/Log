@@ -48,7 +48,6 @@ public class Main {
                 case 5:
                     out.println("Thank you for using my program");
                     System.exit(0);
-                    break;
                 default:
                     out.println("Input is not a choice");
                     break;
