@@ -1,4 +1,4 @@
-package logs;
+package database;
 
 import main.Database;
 import main.Main;

@@ -1,5 +1,7 @@
 package logs;
 
+import database.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

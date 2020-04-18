@@ -1,6 +1,7 @@
 package logs;
 
 import account.User;
+import database.Log;
 import main.Database;
 import main.Main;
 
