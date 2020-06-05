@@ -8,6 +8,7 @@ import main.Main;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 import static java.lang.System.out;
 import static main.Main.showDate;
@@ -26,9 +27,19 @@ public class NewLog extends Log {
     }
 
     public void createUserLog(File directoryPath) {
-        int directoryNumOfFiles = getTheNumberOfFiles(directoryPath);
+        int directoryNumOfFiles = allFiles.length;
 
-        String logFileName = directoryPath.getPath() + "/" + showDate() + " #" + directoryNumOfFiles + ".txt";
+        int highestId = 0;
+
+        if (allFiles.length != 0) {
+            for (File allFile : allFiles) {
+                int temp = Integer.parseInt(allFile.getName().substring(1, allFile.getName().indexOf(" ")));
+
+                highestId = Math.max(highestId, temp);
+            }
+        }
+
+        String logFileName = directoryPath.getPath() + "/#" + (highestId + 1) + " " + showDate() + ".txt";
 
         File newLogFile = new File(logFileName);
 
@@ -97,11 +108,13 @@ public class NewLog extends Log {
         out.println("The user log directory have been made");
     }
 
-    private int getTheNumberOfFiles(File directoryPath) {
-        return directoryPath.list().length == 0 ? 1 : directoryPath.listFiles().length;
+    @Override
+    protected void commandLog(File file) {
+
     }
 
     @Override
-    protected void commandLog(File file) {
+    protected void commandAll() {
+
     }
 }

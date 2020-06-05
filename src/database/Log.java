@@ -6,23 +6,38 @@ import main.Main;
 import static java.lang.System.out;
 
 import java.io.File;
+import java.io.FilenameFilter;
 
 public abstract class Log {
-    public Log() {
-        userHome = "user.home";
-        userHomePath = System.getProperty(userHome);
-
-        directoryPath = userHomePath + "/Documents/Logs/" + Database.getCurrentUser() + "/";
-        directory = new File(directoryPath);
-    }
 
     protected abstract void commandLog(File file);
+    protected abstract void commandAll();
 
     protected final String userHome;
     protected final String userHomePath;
 
     protected final String directoryPath;
     protected final File directory;
+
+    protected final File[] allFiles;
+
+    public Log() {
+        userHome = "user.home";
+        userHomePath = System.getProperty(userHome);
+
+        directoryPath = userHomePath + "/Documents/Logs/" + Database.getCurrentUser() + "/";
+        directory = new File(directoryPath);
+
+        allFiles = directory.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".txt");
+            }
+        });
+
+        // Lambda mode
+//        allFiles = directory.listFiles((dir, name) -> name.endsWith(".txt"));
+    }
 
     protected final void showBoard(File[] allFiles) {
         out.println("\t\t\t\t\t\t\tLogs of " + Database.getCurrentUser());
@@ -52,14 +67,14 @@ public abstract class Log {
 
     public void start() {
         int choice;
-        File[] allFiles = directory.listFiles();
 
         if (directory.exists() && allFiles.length != 1) {
             do {
                 showBoard(allFiles);
                 out.print("1.) Select" +
-                        "\n2.) Back" +
-                        "\nUser Input");
+                        "\n2.) All" +
+                        "\n3.) Back" +
+                        "\nUser Input: ");
                 choice = Main.inputReader.nextInt();
 
                 switch (choice) {
@@ -74,11 +89,12 @@ public abstract class Log {
 
                         break;
                     case 2:
+                        commandAll();
                         break;
                     default:
                         break;
                 }
-            } while (choice != 2 && choice != 1);
+            } while (choice != 3);
         }
 
         else {

@@ -13,4 +13,12 @@ public class DeleteLog extends Log {
             out.println(file.getName() + " has been successfully deleted");
         }
     }
+
+    @Override
+    protected void commandAll() {
+//        for () {
+//
+//
+//        }
+    }
 }

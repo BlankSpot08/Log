@@ -18,4 +18,9 @@ public class ViewLog extends Log {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void commandAll() {
+
+    }
 }
