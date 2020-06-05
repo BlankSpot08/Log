@@ -8,7 +8,6 @@ import main.Main;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.stream.IntStream;
 
 import static java.lang.System.out;
 import static main.Main.showDate;
@@ -27,8 +26,6 @@ public class NewLog extends Log {
     }
 
     public void createUserLog(File directoryPath) {
-        int directoryNumOfFiles = allFiles.length;
-
         int highestId = 0;
 
         if (allFiles.length != 0) {
