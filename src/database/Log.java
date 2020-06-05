@@ -41,37 +41,32 @@ public abstract class Log {
 
     protected final void showBoard(File[] allFiles) {
         out.println("\t\t\t\t\t\t\tLogs of " + Database.getCurrentUser());
-        for (int i = 1; i < allFiles.length; i++) {
-            String output = i % 4 == 0 ? "\n" : allFiles[i - 1].getName().substring(0, allFiles[i - 1].getName().length() - 4) + "\t";
-
-            out.print(output);
+        for (int i = 0; i < allFiles.length; i++) {
+            String fileName = allFiles[i].getName().substring(0, allFiles[i].getName().indexOf(".")) + "\t";
+            String line = i % 3 == 0 && i != 0 ? "\n" + fileName : fileName;
+            out.print(line);
         }
+
         out.println();
     }
 
     protected final File findLog(File[] allFiles, int pickANumber) {
-        for (int i = 0; i < allFiles.length - 1; i++) {
-            String id = allFiles[i].getName().
-                    substring(allFiles[i].getName().length() - (String.valueOf(i).length() + 5),
-                            allFiles[i].getName().length() - 4);
-
-            String idNumberToFind = "#" + pickANumber;
-
-            if (id.equals(idNumberToFind)) {
-                return allFiles[i];
+        for (File allFile : allFiles) {
+            if (Integer.parseInt(allFile.getName().substring(1, allFile.getName().indexOf(" "))) == pickANumber) {
+                return allFile;
             }
         }
 
-        return allFiles[0];
+        return null;
     }
 
     public void start() {
         int choice;
 
-        if (directory.exists() && allFiles.length != 1) {
+        if (directory.exists() && allFiles.length != 0) {
             do {
                 showBoard(allFiles);
-                out.print("1.) Select" +
+                 out.print("1.) Select" +
                         "\n2.) All" +
                         "\n3.) Back" +
                         "\nUser Input: ");
@@ -84,6 +79,8 @@ public abstract class Log {
                         int pickANumber = Main.inputReader.nextInt();
 
                         File tempFile = findLog(allFiles, pickANumber);
+
+                        out.println(tempFile.getName());
 
                         commandLog(tempFile);
 

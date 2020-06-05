@@ -39,7 +39,9 @@ public class NewLog extends Log {
             }
         }
 
-        String logFileName = directoryPath.getPath() + "/#" + (highestId + 1) + " " + showDate() + ".txt";
+        highestId++;
+
+        String logFileName = directoryPath.getPath() + "/#" + highestId + " " + showDate() + ".txt";
 
         File newLogFile = new File(logFileName);
 
@@ -54,7 +56,7 @@ public class NewLog extends Log {
             writeInLogFile = new FileWriter(newLogFile, true);
 
             writeInLogFile.write(showDate() + "\n");
-            writeInLogFile.write(Database.getCurrentUser()+ " Log # " + directoryNumOfFiles + ": " + finalLog + "\nEnd Of Log");
+            writeInLogFile.write(Database.getCurrentUser()+ " Log # " + highestId + ": " + finalLog + "\nEnd Of Log");
             out.println("The log has been registered");
             writeInLogFile.close();
 

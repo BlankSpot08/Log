@@ -16,9 +16,15 @@ public class DeleteLog extends Log {
 
     @Override
     protected void commandAll() {
-//        for () {
-//
-//
-//        }
+        for (File file : allFiles) {
+            out.println(file.getName());
+            if (file.delete()) {
+                out.println(file.getName() + " has been successfully deletd");
+            }
+        }
+
+        if (allFiles.length == 0) {
+            out.println("The Files have all been deleted");
+        }
     }
 }
