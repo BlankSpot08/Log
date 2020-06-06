@@ -2,8 +2,10 @@ package logs;
 
 import database.Log;
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ViewLog extends Log {
     @Override

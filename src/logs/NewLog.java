@@ -43,27 +43,6 @@ public class NewLog extends Log {
 
         String logFileName = directoryPath.getPath() + "/#" + highestId + " " + showDate() + ".txt";
 
-//        File newLogFile = new File(logFileName);
-
-//        out.println("Date & Time: " + showDate());
-//        out.print("Log: ");
-//        String log = Main.stringReader.nextLine();
-//
-//        String finalLog = log.replaceAll("(.{50})", "$1\n");
-//
-//        FileWriter writeInLogFile = null;
-//        try {
-//            writeInLogFile = new FileWriter(newLogFile, true);
-//
-//            writeInLogFile.write(showDate() + "\n");
-//            writeInLogFile.write(Database.getCurrentUser() + " Log # " + highestId + ": " + finalLog + "\nEnd Of Log");
-//            out.println("The log has been registered");
-//            writeInLogFile.close();
-//
-//        } catch (IOException e) {
-//            out.println("CREATE USER LOG: " + e);
-//        }
-
         OutputStream newLogFile = new FileOutputStream(logFileName);
 
         out.println("Date & Time: " + showDate());
