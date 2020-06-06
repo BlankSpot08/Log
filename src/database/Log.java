@@ -7,10 +7,11 @@ import static java.lang.System.out;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 public abstract class Log {
 
-    protected abstract void commandLog(File file);
+    protected abstract void commandLog(String fileName);
     protected abstract void commandAll();
 
     protected final String userHome;
@@ -19,7 +20,7 @@ public abstract class Log {
     protected final String directoryPath;
     protected final File directory;
 
-    protected final File[] allFiles;
+    protected final String[] allFiles;
 
     public Log() {
         userHome = "user.home";
@@ -28,21 +29,34 @@ public abstract class Log {
         directoryPath = userHomePath + "/Documents/Logs/" + Database.getCurrentUser() + "/";
         directory = new File(directoryPath);
 
-        allFiles = directory.listFiles(new FilenameFilter() {
+//        allFiles = directory.listFiles(new FilenameFilter() {
+//            @Override
+//            public boolean accept(File dir, String name) {
+//                return name.endsWith(".txt");
+//            }
+//        });
+
+        File[] temp = directory.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".txt");
             }
         });
 
+        allFiles = new String[temp.length];
+
+        for (int i = 0; i < allFiles.length; i++) {
+            allFiles[i] = temp[i].getAbsolutePath();
+        }
+
         // Lambda mode
 //        allFiles = directory.listFiles((dir, name) -> name.endsWith(".txt"));
     }
 
-    protected final void showBoard(File[] allFiles) {
+    protected final void showBoard(String[] allFiles) {
         out.println("\t\t\t\t\t\t\tLogs of " + Database.getCurrentUser());
         for (int i = 0; i < allFiles.length; i++) {
-            String fileName = allFiles[i].getName().substring(0, allFiles[i].getName().indexOf(".")) + "\t";
+            String fileName = allFiles[i].substring(allFiles[i].indexOf("#"), allFiles[i].indexOf(".")) + "\t";
             String line = i % 3 == 0 && i != 0 ? "\n" + fileName : fileName;
             out.print(line);
         }
@@ -50,9 +64,11 @@ public abstract class Log {
         out.println();
     }
 
-    protected final File findLog(File[] allFiles, int pickANumber) {
-        for (File allFile : allFiles) {
-            if (Integer.parseInt(allFile.getName().substring(1, allFile.getName().indexOf(" "))) == pickANumber) {
+    protected final String findLog(String[] allFiles, int pickANumber) {
+        for (String allFile : allFiles) {
+            String fileName = allFile.substring(allFile.indexOf(Database.getCurrentUser()));
+
+            if (Integer.parseInt(fileName.substring(fileName.indexOf("#") + 1, fileName.indexOf(" "))) == pickANumber) {
                 return allFile;
             }
         }
@@ -60,7 +76,7 @@ public abstract class Log {
         return null;
     }
 
-    public void start() {
+    public void start() throws IOException {
         int choice;
 
         if (directory.exists() && allFiles.length != 0) {
@@ -78,11 +94,9 @@ public abstract class Log {
                         out.print("User Input (#3 = 3): ");
                         int pickANumber = Main.inputReader.nextInt();
 
-                        File tempFile = findLog(allFiles, pickANumber);
+                        String fileName = findLog(allFiles, pickANumber);
 
-                        out.println(tempFile.getName());
-
-                        commandLog(tempFile);
+                        commandLog(fileName);
 
                         break;
                     case 2:

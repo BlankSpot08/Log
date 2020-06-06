@@ -2,37 +2,53 @@ package logs;
 
 import database.Log;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class ViewLog extends Log {
     @Override
-    protected void commandLog(File file) {
+    protected void commandLog(String fileName) {
         try {
-            Scanner scanner = new Scanner(file);
-            scanner.useDelimiter("\\Z");
+            InputStream file = new FileInputStream(fileName);
 
-            System.out.println(scanner.next());
+            int eachChar;
+
+            System.out.println();
+            while ((eachChar = file.read()) != -1) {
+                System.out.print((char) eachChar);
+            }
+            System.out.println();
+
         } catch (FileNotFoundException e) {
+            System.out.println("File not found");
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println("File not found");
         }
+
     }
 
     @Override
     protected void commandAll() {
-        try {
-            for (File file : allFiles) {
-                Scanner scanner = new Scanner(file);
-                scanner.useDelimiter("\\Z");
+        for (String file : allFiles) {
+            try {
+                InputStream thisFile = new FileInputStream(file);
 
-                System.out.println(scanner.next());
+                int eachChar;
+
+                System.out.println();
+                while((eachChar = thisFile.read()) != -1) {
+                    System.out.print((char) eachChar);
+                }
+                System.out.println();
+
+                thisFile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            System.out.println();
         }
 
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }

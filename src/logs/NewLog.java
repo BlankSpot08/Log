@@ -6,8 +6,10 @@ import main.Database;
 import main.Main;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import static java.lang.System.out;
 import static main.Main.showDate;
@@ -15,7 +17,7 @@ import static main.Main.showDate;
 public class NewLog extends Log {
 
     @Override
-    public void start() {
+    public void start() throws IOException {
         if (!directory.exists()) {
             createUserLogDirectory(directory);
         }
@@ -25,41 +27,57 @@ public class NewLog extends Log {
         createUserLog(directory);
     }
 
-    public void createUserLog(File directoryPath) {
+    public void createUserLog(File directoryPath) throws IOException {
         int highestId = 0;
 
-        if (allFiles.length != 0) {
-            for (File allFile : allFiles) {
-                int temp = Integer.parseInt(allFile.getName().substring(1, allFile.getName().indexOf(" ")));
+        for (String file : allFiles) {
 
-                highestId = Math.max(highestId, temp);
-            }
+            String fileName = file.substring(file.indexOf(Database.getCurrentUser()));
+
+            int temp = Integer.parseInt(fileName.substring(1, fileName.indexOf(" ")));
+
+            highestId = Math.max(highestId, temp);
         }
 
         highestId++;
 
         String logFileName = directoryPath.getPath() + "/#" + highestId + " " + showDate() + ".txt";
 
-        File newLogFile = new File(logFileName);
+//        File newLogFile = new File(logFileName);
+
+//        out.println("Date & Time: " + showDate());
+//        out.print("Log: ");
+//        String log = Main.stringReader.nextLine();
+//
+//        String finalLog = log.replaceAll("(.{50})", "$1\n");
+//
+//        FileWriter writeInLogFile = null;
+//        try {
+//            writeInLogFile = new FileWriter(newLogFile, true);
+//
+//            writeInLogFile.write(showDate() + "\n");
+//            writeInLogFile.write(Database.getCurrentUser() + " Log # " + highestId + ": " + finalLog + "\nEnd Of Log");
+//            out.println("The log has been registered");
+//            writeInLogFile.close();
+//
+//        } catch (IOException e) {
+//            out.println("CREATE USER LOG: " + e);
+//        }
+
+        OutputStream newLogFile = new FileOutputStream(logFileName);
 
         out.println("Date & Time: " + showDate());
         out.print("Log: ");
+
         String log = Main.stringReader.nextLine();
 
         String finalLog = log.replaceAll("(.{50})", "$1\n");
 
-        FileWriter writeInLogFile = null;
-        try {
-            writeInLogFile = new FileWriter(newLogFile, true);
+        newLogFile.write((showDate() + "\n").getBytes());
+        newLogFile.write((Database.getCurrentUser() + " Log #" + highestId + ": " + finalLog + "\nEnd of Log").getBytes());
+        out.println("\nThe log has been registered\n");
 
-            writeInLogFile.write(showDate() + "\n");
-            writeInLogFile.write(Database.getCurrentUser()+ " Log # " + highestId + ": " + finalLog + "\nEnd Of Log");
-            out.println("The log has been registered");
-            writeInLogFile.close();
-
-        } catch (IOException e) {
-            out.println("CREATE USER LOG: " + e);
-        }
+        newLogFile.close();
     }
 
     public void createUserInformationDirectory(String path) {
@@ -108,7 +126,7 @@ public class NewLog extends Log {
     }
 
     @Override
-    protected void commandLog(File file) {
+    protected void commandLog(String fileName) {
 
     }
 

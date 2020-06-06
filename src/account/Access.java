@@ -3,6 +3,8 @@ package account;
 import main.Database;
 import main.Main;
 
+import java.io.IOException;
+
 import static java.lang.System.out;
 
 public class Access {
@@ -11,7 +13,7 @@ public class Access {
         Database.setLoggedIn(false);
     }
 
-    public void loginOrRegister() {
+    public void loginOrRegister() throws IOException {
         int choice;
         do {
             out.print("Welcome to my Log Program" +

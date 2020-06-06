@@ -5,6 +5,7 @@ import logs.DeleteLog;
 import logs.NewLog;
 import logs.ViewLog;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -15,7 +16,7 @@ public class Main {
     public static final Scanner inputReader = new Scanner(System.in);
     public static final Scanner stringReader = new Scanner(System.in);
 
-    public void start() {
+    public void start() throws IOException {
         int choice;
         do {
             out.print("Welcome to my Logging Program" +
